@@ -46,6 +46,10 @@ function MenuLeft(props){
             </MenuItem>
       )}
 
+      <MenuItem as={Link} to={"/admin/reports"} active={pathname === "/admin/reports"}>
+        <Icon name="chart bar"/>Reportes
+      </MenuItem>
+
     </Menu>
   );
 }

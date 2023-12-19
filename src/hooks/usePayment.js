@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {createPaymentApi, getPaymentByTableApi, closePaymentApi, getPaymentsApi} from "../api/payment";
+import {createPaymentApi, getPaymentByTableApi, closePaymentApi, getPaymentsApi, getReportsApi} from "../api/payment";
 
 export function usePayment(){
     const [error, setError] = useState(null);
@@ -42,6 +42,14 @@ export function usePayment(){
         }
     };
 
+    const getReports= async (startDate, endDate) =>{
+        try {
+            return await getReportsApi(startDate, endDate);
+        } catch (error) {
+            setError(error);
+        }
+    };
+
     return{
         error,
         loading,
@@ -50,5 +58,6 @@ export function usePayment(){
         getPaymentByTable,
         closePayment,
         getPayments,
+        getReports
     };
 }

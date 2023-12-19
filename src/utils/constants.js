@@ -1,4 +1,4 @@
-export const BASE_PATH = "http://127.0.0.1:8000/";
+export const BASE_PATH = "https://suyaydjango.onrender.com";
 export const TOKEN = "token";
 
 export const ORDER_STATUS = {

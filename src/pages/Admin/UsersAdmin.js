@@ -3,6 +3,8 @@ import {Loader} from "semantic-ui-react";
 import {HeaderPage, TableUsers, AddEditUserForm} from "../../components/Admin";
 import {ModalBasic} from "../../components/Common"
 import {useUser} from "../../hooks";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export function UsersAdmin() {
     const [showModal, setShowModal] = useState(false);
@@ -40,6 +42,30 @@ export function UsersAdmin() {
       }
     }
 
+    const ondeleteUser = async (info) => {
+      const message = `¿Estás seguro de eliminar el usuario ${info.username}?`;
+    
+      return new Promise((resolve) => {
+        confirmAlert({
+          customUI: ({ onClose }) => (
+            <div className="custom-ui">
+              <h1>Confirmación</h1>
+              <p>{message}</p>
+              <button className='buttonCancelar' onClick={() => onClose()}>Cancelar</button>
+              <button className='buttonAceptar'  onClick={async () => { 
+                await deleteUser(info.id);
+                onRefetch();
+                onClose();
+                resolve(true);
+              }}>
+                Confirmar
+              </button>
+            </div>
+          ),
+        });
+      });
+    };
+
   return (
     <>
         <HeaderPage title="Usuarios" btnTitle="Nuevo Usuario" btnClick={addUser}/>
@@ -48,7 +74,7 @@ export function UsersAdmin() {
             Cargando...
           </Loader>
         ) : (
-          <TableUsers users={users} updateUser={updateUser} onDeleteUser={onDeleteUser}/>
+          <TableUsers users={users} updateUser={updateUser} onDeleteUser={ondeleteUser}/>
         )}
 
         <ModalBasic show={showModal} onClose={openCloseModal} title={titleModal} children={contentModal}/>

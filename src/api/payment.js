@@ -1,4 +1,5 @@
 import {BASE_PATH, PAYMENT_STATUS} from "../utils/constants";
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 export async function createPaymentApi(paymentData){
     try {
@@ -68,3 +69,24 @@ export async function getPaymentsApi(){
         throw error;
     }
 }
+
+
+export async function getReportsApi(startDate, endDate) {
+    try {
+        const paymentFilter = `statusPayment=${PAYMENT_STATUS.PAID}`;
+        const orderingFilter = 'ordering=created_at';
+
+        if (startDate && endDate) {
+            const rangeFilter = `&created_at__range=${startDate}T00:00:00Z,${endDate}T23:59:59Z`;
+            const url = `${BASE_PATH}/api/payments/?${paymentFilter}${rangeFilter}&${orderingFilter}`;
+            const response = await fetch(url);
+            const result = await response.json();
+            return result;
+        } else {
+            throw new Error('Las fechas de inicio y fin son necesarias.');
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+

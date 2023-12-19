@@ -10,3 +10,4 @@ export * from "./Table";
 export * from "./TableDetails";
 export * from "./Orders";
 export * from "./Payments";
+export * from "./Reports";
